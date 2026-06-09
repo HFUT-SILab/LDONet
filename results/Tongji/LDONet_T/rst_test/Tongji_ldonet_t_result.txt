@@ -1,0 +1,12 @@
+Dataset/Model: Tongji_ldonet_t
+AUC: 99.9977%
+EER: 0.1966%
+d-prime: 5.7438
+TAR@FAR_E6: 97.1947%
+TAR@FAR_E5: 98.5298%
+TAR@FAR_E4: 99.2860%
+TAR@FAR_E3: 99.7088%
+TAR@FAR_E2: 99.9561%
+TAR@FAR_E1: 100.0000%
+ROC Figure: E:\study\LDONet\results\Tongji\LDONet_T\rst_test\Tongji_ldonet_t_roc.png
+ROC Data: E:\study\LDONet\results\Tongji\LDONet_T\rst_test\Tongji_ldonet_t_roc.npz

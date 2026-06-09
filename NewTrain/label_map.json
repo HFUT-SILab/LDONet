@@ -1,0 +1,23 @@
+{
+"re:.*_teacher_cc$": "CCNet",
+"re:.*_teacher_sf2$": "SF2Net",
+"re:.*_ldonet_t$": "LDONet-T",
+"re:.*_ldonet_s$": "LDONet-S",
+"re:.*_teacher_co3$": "CO3Net",
+"re:.*_teacher_comp$": "CompNet",
+"re:.*_ldonet_s_kd$": "LDONet-S-KD",
+
+
+"bocv": "BOCV",
+"MTCC": "MTCC",
+"rloc": "RLOC",
+"doc": "DOC",
+"drcc": "DRCC",
+"smcc": "SMCC",
+"compcode": "CompCode",
+"ebocv": "EBOCV",
+"OrdinalCode": "OrdinalCode",
+"fusioncode": "FusionCode",
+"2TCC": "2TCC",
+"palmcode": "PalmCode"
+}
