@@ -31,7 +31,7 @@ LR="0.0001"
 WEIGHT_DECAY="0.05"
 WARMUP_EPOCHS="10"
 MIN_LR="1e-6"
-SAVE_INTERVAL="5"
+SAVE_INTERVAL="10"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
