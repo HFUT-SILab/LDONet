@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # LDONet: Lightweight Deployment-Oriented Network for Palmprint Verification
 
 本仓库提供 LDONet 的 PyTorch 实现。LDONet 面向掌纹验证任务，在保持较高识别精度的同时，重点关注模型参数量、计算量与推理延迟。
@@ -254,3 +255,4 @@ LDONet-S 仅包含 **1.191M** 参数，模型大小为 **4.962 MB**。与 LDONet
 ## Acknowledgements
 
 本项目使用 PyTorch 实现。感谢相关掌纹数据集和开源方法的作者为掌纹识别研究提供数据与代码支持。
+=======
