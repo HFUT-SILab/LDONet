@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # LDONet: Lightweight Deployment-Oriented Network for Palmprint Verification
 
 本仓库提供 LDONet 的 PyTorch 实现。LDONet 面向掌纹验证任务，在保持较高识别精度的同时，重点关注模型参数量、计算量与推理延迟。
