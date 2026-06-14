@@ -251,6 +251,4 @@ The following table reports the closed-set EER (%) of different methods on six d
 
 LDONet-S contains only **1.191M** parameters and has a model size of **4.962 MB**. Compared with LDONet-T, it substantially reduces both parameter count and computational cost. With knowledge distillation, LDONet-S-KD also achieves lower EER and higher TAR in the low-FAR region on multiple open-set benchmarks.
 
-## Acknowledgements
 
-This project is implemented with PyTorch. We thank the authors of the palmprint datasets and open-source methods for providing valuable data and code to the research community.
