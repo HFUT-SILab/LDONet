@@ -1,30 +1,29 @@
-<<<<<<< HEAD
 # LDONet: Lightweight Deployment-Oriented Network for Palmprint Verification
 
-本仓库提供 LDONet 的 PyTorch 实现。LDONet 面向掌纹验证任务，在保持较高识别精度的同时，重点关注模型参数量、计算量与推理延迟。
+This repository provides the PyTorch implementation of LDONet, a lightweight network for palmprint verification that balances recognition accuracy with parameter efficiency, computational cost, and inference latency.
 
-代码包含教师模型 **LDONet-T**、轻量学生模型 **LDONet-S**，以及经过知识蒸馏训练的 **LDONet-S-KD**。实验覆盖 PolyU、TJC、HFUT 和 PolyU Multispectral（Blue、Red、Green）等掌纹数据集。
+The code includes the teacher model **LDONet-T**, the lightweight student model **LDONet-S**, and the distilled model **LDONet-S-KD**. Experiments are conducted on PolyU, TJC, HFUT, and the Blue, Red, and Green bands of the PolyU Multispectral Palmprint Database.
 
 ## Method
 
-LDONet 由局部纹理提取和全局特征融合两部分组成：
+LDONet consists of local texture extraction and global feature fusion:
 
-- **LDONet-T** 使用双尺度可学习 Gabor 分支提取掌纹方向纹理，并通过 EDTM 和 MGFFM 建模多尺度信息。
-- **LDONet-S** 将教师网络压缩为单尺度结构，采用轻量化 LMGFFM，在显著减少参数量和计算量的同时保留主要判别能力。
-- **LDONet-S-KD** 以 LDONet-T 为教师，通过知识蒸馏进一步提升轻量模型的验证性能。
+- **LDONet-T** uses dual-scale learnable Gabor branches to extract directional palmprint textures and employs EDTM and MGFFM to model multi-scale information.
+- **LDONet-S** compresses the teacher into a single-scale architecture and adopts the lightweight LMGFFM, substantially reducing parameters and computation while preserving discriminative capability.
+- **LDONet-S-KD** uses LDONet-T as the teacher and further improves the lightweight model through knowledge distillation.
 
-训练阶段使用 ArcFace 分类头学习判别特征；测试阶段使用归一化特征之间的余弦相似度进行掌纹验证。
+During training, an ArcFace classification head is used to learn discriminative representations. During evaluation, palmprint verification is performed using cosine similarity between normalized features.
 
 ## Repository Structure
 
 ```text
 LDONet/
-├── dataset/           # 训练集与测试集索引文件
-├── distillation/      # KD、DKD、MLKD 和 CTKD
+├── dataset/           # Training and test index files
+├── distillation/      # KD, DKD, MLKD, and CTKD
 ├── models/
-│   ├── LDONet_T.py    # 教师模型
-│   ├── LDONet_S.py    # 学生模型
-│   └── component/     # EDTM、MGFFM 等模块
+│   ├── LDONet_T.py    # Teacher model
+│   ├── LDONet_S.py    # Student model
+│   └── component/     # EDTM, MGFFM, and related modules
 ├── NewTrain/
 │   ├── train_LDONet_T.py
 │   ├── train_LDONet_S.py
@@ -32,13 +31,13 @@ LDONet/
 │   ├── test_LDONet_T.py
 │   ├── test_LDONet_S.py
 │   └── convert_features.py
-├── results/           # 模型权重、特征与评估结果
+├── results/           # Checkpoints, features, and evaluation results
 └── utils/
 ```
 
 ## Requirements
 
-建议使用 Python 3.9 或更高版本，并根据本机 CUDA 环境安装对应版本的 PyTorch。
+Python 3.9 or later is recommended. Install the PyTorch version compatible with your local CUDA environment.
 
 ```bash
 pip install torch torchvision numpy pillow scipy scikit-learn matplotlib einops
@@ -46,7 +45,7 @@ pip install torch torchvision numpy pillow scipy scikit-learn matplotlib einops
 
 ## Data Preparation
 
-仓库中的 `dataset/` 目录提供了开放集与闭集实验所使用的数据索引文件：
+The `dataset/` directory contains the index files used for open-set and closed-set experiments:
 
 | Dataset | Classes | Open-set split | Closed-set split |
 | --- | ---: | --- | --- |
@@ -57,17 +56,17 @@ pip install torch torchvision numpy pillow scipy scikit-learn matplotlib einops
 | PolyU | 193 | `train_PolyU_real.txt` / `test_PolyU_real.txt` | `train_PolyU_real_closed.txt` / `test_PolyU_real_closed.txt` |
 | TJC | 300 | `train_Tongji_real.txt` / `test_Tongji_real.txt` | `train_Tongji_real_closed.txt` / `test_Tongji_real_closed.txt` |
 
-每行数据的格式为：
+Each line follows this format:
 
 ```text
 /path/to/palmprint/image.jpg label
 ```
 
-下载并整理原始数据集后，需要将索引文件中的图像路径替换为本机实际路径。所有输入图像均以灰度图读取，并缩放至 `128 × 128`。
+After downloading and organizing the original datasets, replace the image paths in these index files with valid local paths. All input images are loaded in grayscale and resized to `128 × 128`.
 
 ## Training
 
-以下示例以 Blue 数据集为例，其他数据集只需替换数据索引、类别数和输出目录。
+The following examples use the Blue dataset. For other datasets, replace the index file, number of classes, and output directories accordingly.
 
 ### LDONet-T
 
@@ -94,7 +93,7 @@ python NewTrain/train_LDONet_S.py \
 
 ### LDONet-S-KD
 
-训练学生模型前，需要先获得对应数据集上的 LDONet-T 权重。
+An LDONet-T checkpoint trained on the corresponding dataset is required before training the student model.
 
 ```bash
 python NewTrain/train_LDONet_S_KD.py \
@@ -108,11 +107,11 @@ python NewTrain/train_LDONet_S_KD.py \
   --gpu_id 0
 ```
 
-当前实现支持 `kd`、`dkd`、`mlkd` 和 `ctkd` 四种蒸馏方式。
+The current implementation supports `kd`, `dkd`, `mlkd`, and `ctkd`.
 
 ## Evaluation
 
-首先提取测试集特征：
+First, extract features from the test set:
 
 ```bash
 python NewTrain/test_LDONet_S.py \
@@ -124,7 +123,7 @@ python NewTrain/test_LDONet_S.py \
   --gpu_id 0
 ```
 
-随后计算 AUC、EER 和 TAR@FAR，并生成 ROC 曲线：
+Then compute AUC, EER, and TAR@FAR and generate the ROC curve:
 
 ```bash
 python NewTrain/convert_features.py \
@@ -135,13 +134,13 @@ python NewTrain/convert_features.py \
   Blue_LDONet_S_KD
 ```
 
-其中，AUC 和 TAR 越高越好，EER 越低越好。`E1` 至 `E6` 分别表示 FAR 为 `10^-1` 至 `10^-6` 时的 TAR。
+Higher AUC and TAR values indicate better performance, while a lower EER is preferred. `E1` through `E6` denote TAR at FAR values from `10^-1` to `10^-6`, respectively.
 
 ## Experimental Results
 
 ### Closed-set Evaluation
 
-下表给出不同方法在六个数据集上的闭集 EER（%）。
+The following table reports the closed-set EER (%) of different methods on six datasets.
 
 | Model | PolyU | TJC | HFUT | Blue | Red | Green |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -250,9 +249,8 @@ python NewTrain/convert_features.py \
 | CCNet | 62.710M | 1.3366 | 240.055 | 14.091 |
 | CompNet | 5.093M | **0.0902** | 19.636 | **2.004** |
 
-LDONet-S 仅包含 **1.191M** 参数，模型大小为 **4.962 MB**。与 LDONet-T 相比，其参数量和计算量均显著降低，同时在多个开放集实验中，经过知识蒸馏的 LDONet-S-KD 获得了更低的 EER 和更高的低 FAR 区间 TAR。
+LDONet-S contains only **1.191M** parameters and has a model size of **4.962 MB**. Compared with LDONet-T, it substantially reduces both parameter count and computational cost. With knowledge distillation, LDONet-S-KD also achieves lower EER and higher TAR in the low-FAR region on multiple open-set benchmarks.
 
 ## Acknowledgements
 
-本项目使用 PyTorch 实现。感谢相关掌纹数据集和开源方法的作者为掌纹识别研究提供数据与代码支持。
-=======
+This project is implemented with PyTorch. We thank the authors of the palmprint datasets and open-source methods for providing valuable data and code to the research community.
